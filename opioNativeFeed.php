@@ -73,7 +73,7 @@ public function handle_form() {
          exit;
      } else {
         $username = sanitize_text_field( $_POST['username'] );
-        $entityid =  $_POST['entity_id'];
+        $entityid =  sanitize_text_field( $_POST['entity_id'] );
         if(strlen($entityid) === 17) {
             update_option( 'entity_name', $username );
             update_option( 'entity_id', $entityid );?>
@@ -91,8 +91,8 @@ public function handle_form() {
      }
      
      public function setup_shortcode() {
-        $feed = file_get_contents("http://34.225.94.59/reviewFeed?entityid={$this->entity_id}");
+        $feed = wp_remote_get("http://34.225.94.59/reviewFeed?entityid={$this->entity_id}");
         return $feed;
-    }
+    } 
 }
 new Opio_Native_feed(get_option('entity_id'));
