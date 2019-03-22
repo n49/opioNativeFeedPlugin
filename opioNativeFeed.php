@@ -92,7 +92,7 @@ public function handle_form() {
      
      public function setup_shortcode() {
         $feed = wp_remote_get("http://34.225.94.59/reviewFeed?entityid={$this->entity_id}");
-        return $feed;
+        return $feed['body'];
     } 
 }
 new Opio_Native_feed(get_option('entity_id'));
