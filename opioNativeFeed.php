@@ -91,7 +91,7 @@ public function handle_form() {
      }
      
      public function setup_shortcode() {
-        $feed = wp_remote_get("http://34.225.94.59/reviewFeed?entityid={$this->entity_id}");
+        $feed = wp_remote_get("http://native.op.io//reviewFeed?entityid={$this->entity_id}");
         return $feed['body'];
     } 
 }
