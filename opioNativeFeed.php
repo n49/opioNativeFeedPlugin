@@ -11,6 +11,9 @@
           $this->entity_id = $entity_id;
           add_shortcode( 'opiofeed', array( $this, 'setup_shortcode' ) );
           add_action( 'admin_menu', array( $this, 'create_plugin_settings_page' ) );
+          if(!isset($_COOKIE["opioAccessToken"])) {
+            set_access_token()
+          }
       }
 
       public function create_plugin_settings_page() {
@@ -90,9 +93,13 @@ public function handle_form() {
          }
      }
 
-     public function setup_shortcode() {
+    public function setup_shortcode() {
         $feed = wp_remote_get("http://native.op.io//reviewFeed?entityid={$this->entity_id}");
+        return $feed['body'];
+    }
 
+    public function set_access_token() {
+        $feed = wp_remote_get("http://native.op.io//reviewFeed?entityid={$this->entity_id}");
         $doc = new DOMDocument;
         $doc->loadHTML($feed['body']);
         $xpath = new DOMXPath($doc);
@@ -100,8 +107,7 @@ public function handle_form() {
         if($node->nodeValue) {
           setcookie("opioAccessToken", trim($node->nodeValue), time() + (86400 * 30), "/"); // 86400 = 1 day
         }
-        
-        return $feed['body'];
     }
+
 }
 new Opio_Native_feed(get_option('entity_id'));
