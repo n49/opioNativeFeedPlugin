@@ -86,13 +86,16 @@ public function handle_form() {
                  <p>Your entity ID is incorrect.</p>
                  </div> <?php
              }
-             
+
          }
      }
-     
+
      public function setup_shortcode() {
         $feed = wp_remote_get("http://native.op.io//reviewFeed?entityid={$this->entity_id}");
+        if( preg_match("#<div style=\"display: none\" id=\"userToken\">(.+)<\/div>#iU", $feed['body'], $t))  {
+            setcookie("opioAccessToken", trim($t[1]), time() + (86400 * 30), "/"); // 86400 = 1 day
+        }
         return $feed['body'];
-    } 
+    }
 }
 new Opio_Native_feed(get_option('entity_id'));
