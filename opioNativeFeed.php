@@ -78,7 +78,7 @@ public function handle_form() {
             update_option( 'entity_name', $username );
             update_option( 'entity_id', $entityid );?>
             <div class="updated">
-                <p>Your [opio_native_feed] shortcode is ready</p>
+                <p>Your [opiofeed] shortcode is ready</p>
                 </div> <?php
             }
             else { ?>
