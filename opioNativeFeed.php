@@ -92,9 +92,15 @@ public function handle_form() {
 
      public function setup_shortcode() {
         $feed = wp_remote_get("http://native.op.io//reviewFeed?entityid={$this->entity_id}");
-        if( preg_match("#<div style=\"display: none\" id=\"userToken\">(.+)<\/div>#iU", $feed['body'], $t))  {
-            setcookie("opioAccessToken", trim($t[1]), time() + (86400 * 30), "/"); // 86400 = 1 day
+
+        $doc = new DOMDocument;
+        $doc->loadHTML($feed['body']);
+        $xpath = new DOMXPath($doc);
+        $node  = $xpath->query("//div[@id='userToken']")->item(0);
+        if($node->nodeValue) {
+          setcookie("opioAccessToken", trim($node->nodeValue), time() + (86400 * 30), "/"); // 86400 = 1 day
         }
+        
         return $feed['body'];
     }
 }
