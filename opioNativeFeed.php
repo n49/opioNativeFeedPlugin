@@ -90,8 +90,11 @@ public function handle_form() {
          }
      }
      
-     public function setup_shortcode() {
-        $feed = wp_remote_get("http://34.225.94.59/reviewFeed?entityid={$this->entity_id}");
+     public function setup_shortcode($atts =[], $content = null, $tag= '') {
+		 $feed = wp_remote_get( "http://34.225.94.59/reviewFeed?entityid={$atts['entity']}" ,
+             array(
+            'headers' => array( 'allow-native-index' => true ) 
+             ));
         return $feed['body'];
     } 
 }
